@@ -10,6 +10,7 @@ fastapi = "*"
 json2xml = "*"
 requests = "*"
 uvicorn = "*"
+python-dotenv = "*"
 
 [requires]
 python_version = "3.8"

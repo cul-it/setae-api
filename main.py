@@ -2,7 +2,11 @@ from typing import Optional
 from fastapi import FastAPI, Response
 from json2xml import json2xml
 from json2xml.utils import readfromstring
+from dotenv import load_dotenv
+import os
 import requests
+
+load_dotenv()
 
 app = FastAPI()
 
@@ -18,8 +22,8 @@ async def read_item(barcode: int, format: Optional[str] = "xml"):
     params = {"query": f"(barcode=={barcode})"}
     headers = {
         "Content-Type": "application/json",
-        "X-Okapi-Tenant": "CHANGEME",
-        "X-Okapi-Token": "CHANGEME",
+        "X-Okapi-Tenant": os.getenv("OKAPI_TENANT"),
+        "X-Okapi-Token": os.getenv("OKAPI_TOKEN"),
     }
     folio_inventory = requests.get(url, params=params, headers=headers)
 
