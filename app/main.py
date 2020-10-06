@@ -18,7 +18,7 @@ async def read_root():
 
 @app.get("/items/{barcode}")
 async def read_item(barcode: int, format: Optional[str] = "xml"):
-    url = "https://okapi-cornell-test.folio.ebsco.com/inventory/items"
+    url = f"{os.getenv('OKAPI_URL')}/inventory/items"
     params = {"query": f"(barcode=={barcode})"}
     headers = {
         "Content-Type": "application/json",
