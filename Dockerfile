@@ -15,3 +15,6 @@ RUN poetry install --no-root --no-dev
 COPY ./.env /app/
 
 COPY ./app /app
+
+# Send print & log statements directly to stdout
+ENV PYTHONUNBUFFERED 1
