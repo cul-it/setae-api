@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "setae-api"
+version = "0.1.0"
+description = "API middleware for FOLIO"
+authors = ["Nick Cappadona <cappadona@users.noreply.github.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+fastapi = "^0.61.1"
+json2xml = "^3.5.0"
+requests = "^2.24.0"
+uvicorn = "^0.12.1"
+python-dotenv = "^0.14.0"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
