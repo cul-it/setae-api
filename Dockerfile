@@ -11,9 +11,6 @@ COPY ./pyproject.toml ./poetry.lock* /app/
 
 RUN poetry install --no-root --no-dev
 
-# Environment variables
-COPY ./.env /app/
-
 COPY ./app /app
 
 # Send print & log statements directly to stdout
