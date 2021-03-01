@@ -49,7 +49,10 @@ async def read_item(barcode: int, format: Optional[str] = "xml"):
         return folio_inventory.json()
     else:
         data = readfromstring(folio_inventory.text)
-        xml = json2xml.Json2xml(data).to_xml()
+        # FOLIO /inventory/items endpoint always returns list
+        # -- trim to single item because SpineOMatic expects object as root node
+        item = data["items"][0]
+        xml = json2xml.Json2xml(item, wrapper="item").to_xml()
         return Response(content=xml, media_type="application/xml")
 
 
