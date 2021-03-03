@@ -3,6 +3,7 @@ from fastapi import APIRouter, FastAPI, Request, Response
 from fastapi.routing import APIRoute
 from json2xml import json2xml
 from json2xml.utils import readfromstring
+from lxml import etree
 from dotenv import load_dotenv
 import os
 import requests
@@ -53,7 +54,12 @@ async def read_item(barcode: int, format: Optional[str] = "xml"):
         # -- trim to single item because SpineOMatic expects object as root node
         item = data["items"][0]
         xml = json2xml.Json2xml(item, wrapper="item").to_xml()
-        return Response(content=xml, media_type="application/xml")
+
+        # Transform XML to align with ALMA's RESTful API response
+        transform = etree.XSLT(etree.parse("./alma-rest-item.xsl"))
+        result = transform(etree.fromstring(xml))
+
+        return Response(content=bytes(result), media_type="application/xml")
 
 
 app.include_router(router)
