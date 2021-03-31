@@ -25,9 +25,7 @@
         <holding_id>
           <xsl:value-of select="item/holdingsRecordId"/>
         </holding_id>
-        <call_number_type>
-          <xsl:value-of select="item/effectiveCallNumberComponents/typeId"/>
-        </call_number_type>
+        <call_number_type>0</call_number_type>
         <call_number>
           <xsl:value-of select="item/callNumber"/>
         </call_number>
