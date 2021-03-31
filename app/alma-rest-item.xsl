@@ -27,18 +27,13 @@
         </holding_id>
         <call_number_type desc="Library of Congress classification">0</call_number_type>
         <call_number>
-          <xsl:value-of select="item/callNumber"/>
+          <xsl:value-of select="item/effectiveCallNumberComponents/callNumber"/>
         </call_number>
         <accession_number></accession_number>
         <copy_id>
           <xsl:value-of select="item/copyNumber"/>
         </copy_id>
         <in_temp_location>false</in_temp_location>
-        <temp_library/>
-        <temp_location/>
-        <temp_call_number_type></temp_call_number_type>
-        <temp_call_number></temp_call_number>
-        <temp_policy></temp_policy>
       </holding_data>
       <item_data>
         <pid>
