@@ -48,7 +48,12 @@
         <modification_date>
           <xsl:value-of select="item/metadata/updatedDate"/>
         </modification_date>
-        <base_status desc="Item in place">1</base_status>
+        <base_status>
+          <xsl:attribute name="desc">
+            <xsl:value-of select="item/status/name"/>
+          </xsl:attribute>
+          <xsl:text>1</xsl:text>
+        </base_status>
         <awaiting_reshelving>false</awaiting_reshelving>
         <physical_material_type>
           <xsl:attribute name="desc">
