@@ -77,9 +77,15 @@
         <inventory_number></inventory_number>
         <inventory_price></inventory_price>
         <library>
+          <xsl:attribute name="desc">
+            <xsl:value-of select="item/effectiveLocation/name"/>
+          </xsl:attribute>
           <xsl:value-of select="item/effectiveLocation/name"/>
         </library>
         <location>
+          <xsl:attribute name="desc">
+            <xsl:value-of select="item/effectiveLocation/name"/>
+          </xsl:attribute>
           <xsl:value-of select="item/effectiveLocation/name"/>
         </location>
         <alternative_call_number></alternative_call_number>
