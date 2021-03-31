@@ -50,7 +50,10 @@
         </modification_date>
         <base_status desc="Item in place">1</base_status>
         <awaiting_reshelving>false</awaiting_reshelving>
-        <physical_material_type desc="Book">
+        <physical_material_type>
+          <xsl:attribute name="desc">
+            <xsl:value-of select="item/materialType/name"/>
+          </xsl:attribute>
           <xsl:value-of select="item/materialType/name"/>
         </physical_material_type>
         <policy></policy>
