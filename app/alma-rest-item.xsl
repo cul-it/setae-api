@@ -131,17 +131,6 @@
           </address>
         </library_details>
         <parsed_alt_call_number/>
-        <parsed_call_number>
-          <call_no>
-            <xsl:value-of select="item/effectiveCallNumberComponents/prefix"/>
-          </call_no>
-          <call_no>
-            <xsl:value-of select="item/effectiveCallNumberComponents/callNumber"/>
-          </call_no>
-          <call_no>
-            <xsl:value-of select="item/effectiveCallNumberComponents/suffix"/>
-          </call_no>
-        </parsed_call_number>
         <title_abcnph>
           <xsl:value-of select="item/title"/>
         </title_abcnph>
