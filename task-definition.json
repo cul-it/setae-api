@@ -25,7 +25,20 @@
       "command": null,
       "linuxParameters": null,
       "cpu": 256,
-      "environment": [],
+      "environment": [
+        {
+          "name": "OKAPI_TENANT",
+          "value": ""
+        },
+        {
+          "name": "OKAPI_TOKEN",
+          "value": ""
+        },
+        {
+          "name": "OKAPI_URL",
+          "value": ""
+        }
+      ],
       "resourceRequirements": null,
       "ulimits": null,
       "dnsServers": null,

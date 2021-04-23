@@ -48,6 +48,16 @@ jobs:
         env:
           executionRoleArn: arn:aws:iam::${{ secrets.AWS_ACCOUNT_NUMBER }}:role/folio-contrib-dev_setae-api_ecs_task_execution_role
 
+      - name: Fill in the environment variables in the Amazon ECS task definition
+        id: task-def-env-vars
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: "task-definition.json"
+        env:
+          containerDefinitions.0.environment.0.value: ${{ secrets.OKAPI_TENANT }}
+          containerDefinitions.0.environment.1.value: ${{ secrets.OKAPI_TOKEN }}
+          containerDefinitions.0.environment.2.value: ${{ secrets.OKAPI_URL }}
+
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
