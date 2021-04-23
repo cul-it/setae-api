@@ -40,6 +40,14 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
+      - name: Fill in the execution role ARN in the Amazon ECS task definition
+        id: task-def-exec-arn
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: "task-definition.json"
+        env:
+          executionRoleArn: arn:aws:iam::${{ secrets.AWS_ACCOUNT_NUMBER }}:role/folio-contrib-dev_setae-api_ecs_task_execution_role
+
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
