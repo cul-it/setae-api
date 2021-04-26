@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - alma-xslt
+      - main
 
 name: Deploy to Amazon ECS
 
