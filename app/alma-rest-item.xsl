@@ -66,7 +66,9 @@
         <po_line></po_line>
         <is_magnetic></is_magnetic>
         <year_of_issue></year_of_issue>
-        <enumeration_a></enumeration_a>
+        <enumeration_a>
+          <xsl:value-of select="item/enumeration"/>
+        </enumeration_a>
         <enumeration_b></enumeration_b>
         <enumeration_c></enumeration_c>
         <enumeration_d></enumeration_d>
@@ -74,7 +76,9 @@
         <enumeration_f></enumeration_f>
         <enumeration_g></enumeration_g>
         <enumeration_h></enumeration_h>
-        <chronology_i></chronology_i>
+        <chronology_i>
+          <xsl:value-of select="item/chronology"/>
+        </chronology_i>
         <chronology_j></chronology_j>
         <chronology_k></chronology_k>
         <chronology_l></chronology_l>
