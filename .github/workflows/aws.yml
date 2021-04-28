@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - more-mapping
+      - main
 
 name: Deploy to Amazon ECS
 
