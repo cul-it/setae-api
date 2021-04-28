@@ -27,8 +27,6 @@
         </holding_id>
         <call_number_type desc="Library of Congress classification">0</call_number_type>
         <call_number>
-          <xsl:value-of select="item/effectiveCallNumberComponents/prefix"/>
-          <xsl:text> </xsl:text>
           <xsl:value-of select="item/effectiveCallNumberComponents/callNumber"/>
           <xsl:text> </xsl:text>
           <xsl:value-of select="item/effectiveCallNumberComponents/suffix"/>
