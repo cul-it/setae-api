@@ -28,8 +28,6 @@
         <call_number_type desc="Library of Congress classification">0</call_number_type>
         <call_number>
           <xsl:value-of select="item/effectiveCallNumberComponents/callNumber"/>
-          <xsl:text> </xsl:text>
-          <xsl:value-of select="item/effectiveCallNumberComponents/suffix"/>
         </call_number>
         <accession_number></accession_number>
         <copy_id>
@@ -71,8 +69,12 @@
         <enumeration_a>
           <xsl:value-of select="item/enumeration"/>
         </enumeration_a>
-        <enumeration_b></enumeration_b>
-        <enumeration_c></enumeration_c>
+        <enumeration_b>
+          <xsl:value-of select="item/effectiveCallNumberComponents/prefix"/>
+        </enumeration_b>
+        <enumeration_c>
+          <xsl:value-of select="item/effectiveCallNumberComponents/suffix"/>
+        </enumeration_c>
         <enumeration_d></enumeration_d>
         <enumeration_e></enumeration_e>
         <enumeration_f></enumeration_f>
