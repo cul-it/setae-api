@@ -2,6 +2,7 @@ on:
   push:
     branches:
       - enum-prefix-suffix
+  workflow_dispatch: # allows for manual trigger via UI/CLI/API
 
 name: Deploy to Amazon ECS
 
