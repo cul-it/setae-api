@@ -65,6 +65,12 @@
         <provenance></provenance>
         <po_line></po_line>
         <is_magnetic></is_magnetic>
+        <prefix>
+          <xsl:value-of select="item/effectiveCallNumberComponents/prefix"/>
+        </prefix>
+        <suffix>
+          <xsl:value-of select="item/effectiveCallNumberComponents/suffix"/>
+        </suffix>
         <year_of_issue></year_of_issue>
         <enumeration_a>
           <xsl:value-of select="item/enumeration"/>
