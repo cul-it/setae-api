@@ -28,8 +28,6 @@
         <call_number_type desc="Library of Congress classification">0</call_number_type>
         <call_number>
           <xsl:value-of select="item/effectiveCallNumberComponents/callNumber"/>
-          <xsl:text> </xsl:text>
-          <xsl:value-of select="item/effectiveCallNumberComponents/suffix"/>
         </call_number>
         <accession_number></accession_number>
         <copy_id>
@@ -67,6 +65,12 @@
         <provenance></provenance>
         <po_line></po_line>
         <is_magnetic></is_magnetic>
+        <prefix>
+          <xsl:value-of select="item/effectiveCallNumberComponents/prefix"/>
+        </prefix>
+        <suffix>
+          <xsl:value-of select="item/effectiveCallNumberComponents/suffix"/>
+        </suffix>
         <year_of_issue></year_of_issue>
         <enumeration_a>
           <xsl:value-of select="item/enumeration"/>
