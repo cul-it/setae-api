@@ -1,0 +1,4 @@
+[flake8]
+# Follow black's lead
+max-line-length = 88
+inline-quotes = double
