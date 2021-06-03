@@ -1,11 +1,13 @@
-from typing import Callable, Optional
+from dotenv import load_dotenv
 from fastapi import APIRouter, FastAPI, Request, Response
 from fastapi.routing import APIRoute
 from json2xml import json2xml
 from json2xml.utils import readfromstring
 from lxml import etree
-from dotenv import load_dotenv
+from typing import Callable, List, Optional
+import csv
 import os
+import re
 import requests
 
 load_dotenv()
@@ -37,7 +39,10 @@ async def read_root():
 
 @router.get("/items/{barcode}")
 async def read_item(
-    barcode: int, format: Optional[str] = "xml", transform: Optional[bool] = True
+    barcode: int,
+    format: Optional[str] = "xml",
+    replace: Optional[bool] = True,
+    transform: Optional[bool] = True,
 ):
     url = f"{os.getenv('OKAPI_URL')}/inventory/items"
     params = {"query": f"(barcode=={barcode})"}
@@ -55,6 +60,29 @@ async def read_item(
         # FOLIO /inventory/items endpoint always returns list
         # -- trim to single item because SpineOMatic expects object as root node
         item = data["items"][0]
+
+        if replace:
+            # String replacement for call number prefix & suffix
+            # -- replacements managed via CSV in repo
+            with open("./prefix-suffix.csv", newline="") as csvfile:
+                reader = csv.DictReader(csvfile)
+                replacements = [row for row in reader]
+
+            prefix_regex = _reps_to_regex(replacements=replacements, field="prefix")
+            suffix_regex = _reps_to_regex(replacements=replacements, field="suffix")
+
+            callnumber_comps = item.get("effectiveCallNumberComponents", {})
+            prefix = callnumber_comps.get("prefix")
+            suffix = callnumber_comps.get("suffix")
+
+            if prefix:
+                processed_prefix = _replace_string(string=prefix, regex=prefix_regex)
+                item["effectiveCallNumberComponents"]["prefix"] = processed_prefix
+
+            if suffix:
+                processed_suffix = _replace_string(string=suffix, regex=suffix_regex)
+                item["effectiveCallNumberComponents"]["suffix"] = processed_suffix
+
         xml_raw = json2xml.Json2xml(item, wrapper="item").to_xml()
 
         if transform:
@@ -67,6 +95,20 @@ async def read_item(
             xml = xml_raw
 
         return Response(content=xml, media_type="application/xml")
+
+
+def _reps_to_regex(replacements: List, field: str):
+    return [
+        (fr"^{rep['string']}$", f"{rep['replacement']}")
+        for rep in replacements
+        if rep["field"] == field
+    ]
+
+
+def _replace_string(string: str, regex: List):
+    for r in regex:
+        string = re.sub(r[0], r[1], string, flags=re.IGNORECASE)
+    return string
 
 
 app.include_router(router)
