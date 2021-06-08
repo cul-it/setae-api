@@ -4,6 +4,7 @@ from fastapi.routing import APIRoute
 from json2xml import json2xml
 from json2xml.utils import readfromstring
 from lxml import etree
+from lxml.builder import E
 from typing import Callable, List, Optional
 import csv
 import os
@@ -59,40 +60,50 @@ async def read_item(
         data = readfromstring(folio_inventory.text)
         # FOLIO /inventory/items endpoint always returns list
         # -- trim to single item because SpineOMatic expects object as root node
-        item = data["items"][0]
+        try:
+            item = data["items"][0]
 
-        if replace:
-            # String replacement for call number prefix & suffix
-            # -- replacements managed via CSV in repo
-            with open("./prefix-suffix.csv", newline="") as csvfile:
-                reader = csv.DictReader(csvfile)
-                replacements = [row for row in reader]
+            if replace:
+                # String replacement for call number prefix & suffix
+                # -- replacements managed via CSV in repo
+                with open("./prefix-suffix.csv", newline="") as csvfile:
+                    reader = csv.DictReader(csvfile)
+                    replacements = [row for row in reader]
 
-            prefix_regex = _reps_to_regex(replacements=replacements, field="prefix")
-            suffix_regex = _reps_to_regex(replacements=replacements, field="suffix")
+                prefix_regex = _reps_to_regex(replacements=replacements, field="prefix")
+                suffix_regex = _reps_to_regex(replacements=replacements, field="suffix")
 
-            callnumber_comps = item.get("effectiveCallNumberComponents", {})
-            prefix = callnumber_comps.get("prefix")
-            suffix = callnumber_comps.get("suffix")
+                callnumber_comps = item.get("effectiveCallNumberComponents", {})
+                prefix = callnumber_comps.get("prefix")
+                suffix = callnumber_comps.get("suffix")
 
-            if prefix:
-                processed_prefix = _replace_string(string=prefix, regex=prefix_regex)
-                item["effectiveCallNumberComponents"]["prefix"] = processed_prefix
+                if prefix:
+                    processed_prefix = _replace_string(
+                        string=prefix, regex=prefix_regex
+                    )
+                    item["effectiveCallNumberComponents"]["prefix"] = processed_prefix
 
-            if suffix:
-                processed_suffix = _replace_string(string=suffix, regex=suffix_regex)
-                item["effectiveCallNumberComponents"]["suffix"] = processed_suffix
+                if suffix:
+                    processed_suffix = _replace_string(
+                        string=suffix, regex=suffix_regex
+                    )
+                    item["effectiveCallNumberComponents"]["suffix"] = processed_suffix
 
-        xml_raw = json2xml.Json2xml(item, wrapper="item").to_xml()
+            xml_raw = json2xml.Json2xml(item, wrapper="item").to_xml()
 
-        if transform:
-            # Transform XML to align with ALMA's RESTful API response
-            transform = etree.XSLT(etree.parse("./alma-rest-item.xsl"))
-            result = transform(etree.fromstring(xml_raw))
-            xml = bytes(result)
+            if transform:
+                # Transform XML to align with ALMA's RESTful API response
+                transform = etree.XSLT(etree.parse("./alma-rest-item.xsl"))
+                result = transform(etree.fromstring(xml_raw))
+                xml = bytes(result)
 
-        else:
-            xml = xml_raw
+            else:
+                xml = xml_raw
+
+        except IndexError as e:
+            xml = etree.tostring(
+                E.error(E.message(f"No item found for barcode {barcode}"))
+            )
 
         return Response(content=xml, media_type="application/xml")
 
