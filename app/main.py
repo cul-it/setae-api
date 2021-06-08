@@ -100,7 +100,7 @@ async def read_item(
             else:
                 xml = xml_raw
 
-        except IndexError as e:
+        except IndexError:
             xml = etree.tostring(
                 E.error(E.message(f"No item found for barcode {barcode}"))
             )
