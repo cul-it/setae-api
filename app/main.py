@@ -91,19 +91,19 @@ async def read_item(
 
             xml_raw = json2xml.Json2xml(item, wrapper="item").to_xml()
 
-            if transform:
-                # Transform XML to align with ALMA's RESTful API response
-                transform = etree.XSLT(etree.parse("./alma-rest-item.xsl"))
-                result = transform(etree.fromstring(xml_raw))
-                xml = bytes(result)
-
-            else:
-                xml = xml_raw
-
         except IndexError:
-            xml = etree.tostring(
+            xml_raw = etree.tostring(
                 E.error(E.message(f"No item found for barcode {barcode}"))
             )
+
+        if transform:
+            # Transform XML to align with ALMA's RESTful API response
+            transform = etree.XSLT(etree.parse("./alma-rest-item.xsl"))
+            result = transform(etree.fromstring(xml_raw))
+            xml = bytes(result)
+
+        else:
+            xml = xml_raw
 
         return Response(content=xml, media_type="application/xml")
 

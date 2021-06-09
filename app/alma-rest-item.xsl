@@ -3,6 +3,11 @@
   <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes"/>
   <xsl:template match="/">
     <item>
+      <xsl:if test="error">
+        <error>
+          <xsl:value-of select="error" />
+        </error>
+      </xsl:if>
       <bib_data>
         <mms_id></mms_id>
         <title>
