@@ -12,8 +12,10 @@
             <title>ERROR</title>
           </bib_data>
           <holding_data>
-            <call_number_type desc="Library of Congress classification">0</call_number_type>
-            <call_number>ERROR</call_number>
+            <call_number_type desc="Superintendent of Documents classification">3</call_number_type>
+            <call_number>
+              <xsl:value-of select="error" />
+            </call_number>
           </holding_data>
           <item_data>
             <description>ERROR</description>
