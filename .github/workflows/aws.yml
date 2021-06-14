@@ -55,9 +55,10 @@ jobs:
         with:
           files: "task-definition.json"
         env:
-          containerDefinitions.0.environment.0.value: ${{ secrets.OKAPI_TENANT }}
-          containerDefinitions.0.environment.1.value: ${{ secrets.OKAPI_TOKEN }}
+          containerDefinitions.0.environment.0.value: ${{ secrets.OKAPI_PASSWORD }}
+          containerDefinitions.0.environment.1.value: ${{ secrets.OKAPI_TENANT }}
           containerDefinitions.0.environment.2.value: ${{ secrets.OKAPI_URL }}
+          containerDefinitions.0.environment.3.value: ${{ secrets.OKAPI_USER }}
 
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
