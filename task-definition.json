@@ -27,15 +27,19 @@
       "cpu": 256,
       "environment": [
         {
+          "name": "OKAPI_PASSWORD",
+          "value": ""
+        },
+        {
           "name": "OKAPI_TENANT",
           "value": ""
         },
         {
-          "name": "OKAPI_TOKEN",
+          "name": "OKAPI_URL",
           "value": ""
         },
         {
-          "name": "OKAPI_URL",
+          "name": "OKAPI_USER",
           "value": ""
         }
       ],

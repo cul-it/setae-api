@@ -8,8 +8,9 @@ API middleware to support LTS workflows in FOLIO.
 
 * [Docker](https://docs.docker.com/install/)
 * [Docker Compose](https://docs.docker.com/compose/install/)
-
-> If using Docker Desktop, [ensure filesystem sharing for macOS](https://docs.docker.com/docker-for-mac/osxfs/#namespaces) or [shared drives for Windows](https://docs.docker.com/docker-for-windows/#shared-drives) is configured properly to support mounting files at the path of your working copy for this repo.
+  > If using Docker Desktop, [ensure filesystem sharing for macOS](https://docs.docker.com/docker-for-mac/osxfs/#namespaces) or [shared drives for Windows](https://docs.docker.com/docker-for-windows/#shared-drives) is configured properly to support mounting files at the path of your working copy for this repo.
+* FOLIO user account with necessary permissions
+  > see [folio-permset.json](folio-permset.json)
 
 ### Clone this repo
 

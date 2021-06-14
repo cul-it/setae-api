@@ -1,0 +1,12 @@
+{
+  "permissionName": "26a96cc4-b79e-4e86-b067-7e246ead50ce",
+  "displayName": "machine-users_spine-labeler",
+  "id": "26a96cc4-b79e-4e86-b067-7e246ead50ce",
+  "description": "Used by API middleware for SpineOMatic (spine labeler)",
+  "tags": [],
+  "subPermissions": [
+    "inventory.items.collection.get"
+  ],
+  "mutable": true,
+  "visible": true
+}

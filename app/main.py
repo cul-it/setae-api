@@ -50,7 +50,7 @@ async def read_item(
     headers = {
         "Content-Type": "application/json",
         "X-Okapi-Tenant": os.getenv("OKAPI_TENANT"),
-        "X-Okapi-Token": os.getenv("OKAPI_TOKEN"),
+        "X-Okapi-Token": _okapi_login(),
     }
     folio_inventory = requests.get(url, params=params, headers=headers)
 
@@ -106,6 +106,22 @@ async def read_item(
             xml = xml_raw
 
         return Response(content=xml, media_type="application/xml")
+
+
+def _okapi_login():
+    url = f"{os.getenv('OKAPI_URL')}/authn/login"
+    headers = {
+        "X-Okapi-Tenant": os.getenv("OKAPI_TENANT"),
+    }
+    data = {
+        "username": os.getenv("OKAPI_USER"),
+        "password": os.getenv("OKAPI_PASSWORD"),
+    }
+    r = requests.post(url, json=data, headers=headers)
+    r.raise_for_status()
+    if r.status_code == 201:
+        return r.headers["X-Okapi-Token"]
+    return None
 
 
 def _reps_to_regex(replacements: List, field: str):
