@@ -63,6 +63,9 @@ async def read_item(
         try:
             item = data["items"][0]
 
+            # Trim spaces from call number components
+            prefix, suffix = _trim_callno_components(item=item)
+
             if replace:
                 # String replacement for call number prefix & suffix
                 # -- replacements managed via CSV in repo
@@ -72,10 +75,6 @@ async def read_item(
 
                 prefix_regex = _reps_to_regex(replacements=replacements, field="prefix")
                 suffix_regex = _reps_to_regex(replacements=replacements, field="suffix")
-
-                callnumber_comps = item.get("effectiveCallNumberComponents", {})
-                prefix = callnumber_comps.get("prefix")
-                suffix = callnumber_comps.get("suffix")
 
                 if prefix:
                     processed_prefix = _replace_string(
@@ -136,6 +135,28 @@ def _replace_string(string: str, regex: List):
     for r in regex:
         string = re.sub(r[0], r[1], string, flags=re.IGNORECASE)
     return string
+
+
+def _trim_callno_components(item: dict):
+    """
+    Collapse multiple spaces to singular and remove leading/tailing spaces.
+    Returns call number prefix and suffix for later string replacement.
+    """
+    callno_comps = item.get("effectiveCallNumberComponents", {})
+
+    comps = {
+        "callNumber": callno_comps.get("callNumber"),
+        "prefix": callno_comps.get("prefix"),
+        "suffix": callno_comps.get("suffix"),
+    }
+
+    for k, v in comps.items():
+        if comps[k]:
+            item["effectiveCallNumberComponents"][k] = comps[k] = re.sub(
+                " +", " ", v
+            ).strip()
+
+    return comps["prefix"], comps["suffix"]
 
 
 app.include_router(router)
