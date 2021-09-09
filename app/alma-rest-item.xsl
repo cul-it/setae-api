@@ -30,9 +30,7 @@
               <xsl:value-of select="item/title"/>
             </title>
             <author>
-              <xsl:for-each select="item/contributorNames/item">
-                <xsl:value-of select="name"/>,
-              </xsl:for-each>
+              <xsl:for-each select="item/contributorNames/item"><xsl:value-of select="name"/>,</xsl:for-each>
             </author>
             <complete_edition></complete_edition>
             <network_numbers>
