@@ -6,7 +6,7 @@ authors = ["Nick Cappadona <cappadona@users.noreply.github.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-fastapi = "^0.61.1"
+fastapi = "^0.68.1"
 json2xml = "^3.5.0"
 requests = "^2.24.0"
 uvicorn = "^0.12.1"
