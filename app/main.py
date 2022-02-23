@@ -53,14 +53,35 @@ async def solr_item(hrid: int):
 
     for h in rebuilt:
         first_key = next(iter(h))
+        h[first_key]["availableCount"] = 0
+        h[first_key]["totalCount"] = 0
+        h[first_key]["nextDue"] = []
         h[first_key]["items"] = []
 
     for item_vals in items.values():
         for item in item_vals:
+            status = item["status"].get("status")
+            due = item["status"].get("due")
             for holding in rebuilt:
                 for holding_val in holding.values():
                     if item["call"] == holding_val["call"]:
+                        holding_val["totalCount"] += 1
+                        if status == "Available":
+                            holding_val["availableCount"] += 1
                         holding_val["items"].append(item)
+                        # TODO: Test due date is in the future!
+                        # -- FOLIO does not automatically update status once due date
+                        # -- has past and item remains "Checked out". Additionally,
+                        # -- FOLIO has no "Overdue" or "Late" status. Yay!
+                        if due and status == "Checked out":
+                            holding_val["nextDue"].append(due)
+
+    for holding in rebuilt:
+        for holding_val in holding.values():
+            if holding_val["nextDue"]:
+                holding_val["nextDue"] = sorted(holding_val["nextDue"])[0]
+            else:
+                holding_val["nextDue"] = None
     return rebuilt
 
 
