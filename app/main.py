@@ -38,6 +38,32 @@ async def read_root():
     return {"Hello": "World"}
 
 
+@app.get("/solr/{hrid}")
+async def solr_item(hrid: int):
+    url = f"{os.getenv('SOLR_URL')}/get"
+    params = {"ids": hrid}
+
+    solr_items = requests.get(url, params=params)
+    data = readfromstring(solr_items.text)
+    doc = data["response"]["docs"][0]
+    holdings = readfromstring(doc["holdings_json"])
+    items = readfromstring(doc["items_json"])
+
+    rebuilt = [{k: v} for k, v in holdings.items()]
+
+    for h in rebuilt:
+        first_key = next(iter(h))
+        h[first_key]["items"] = []
+
+    for item_vals in items.values():
+        for item in item_vals:
+            for holding in rebuilt:
+                for holding_val in holding.values():
+                    if item["call"] == holding_val["call"]:
+                        holding_val["items"].append(item)
+    return rebuilt
+
+
 @router.get("/items/{barcode}")
 async def read_item(
     barcode: int,
