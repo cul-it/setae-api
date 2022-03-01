@@ -64,7 +64,9 @@ async def solr_item(hrid: int):
             due = item["status"].get("due")
             for holding in rebuilt:
                 for holding_val in holding.values():
-                    if item["call"] == holding_val["call"]:
+                    # if item["call"] == holding_val["call"]:
+                    # Re-join Holdings and Items via location code
+                    if item["location"]["code"] == holding_val["location"]["code"]:
                         holding_val["totalCount"] += 1
                         if status == "Available":
                             holding_val["availableCount"] += 1
