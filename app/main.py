@@ -5,7 +5,7 @@ from json2xml import json2xml
 from json2xml.utils import readfromstring
 from lxml import etree
 from lxml.builder import E
-from typing import Callable, List, Optional
+from typing import Callable, Dict, List, Optional
 import csv
 import os
 import re
@@ -44,7 +44,10 @@ async def read_root():
 
 
 @app.get("/solr/{hrid}")
-async def solr_item(hrid: int):
+async def solr_item(
+    hrid: int,
+    location: Optional[str] = None,
+):
     url = f"{os.getenv('SOLR_URL')}/get"
     params = {"ids": hrid}
 
@@ -100,7 +103,8 @@ async def solr_item(hrid: int):
                 holding_val["nextDue"] = sorted(holding_val["nextDue"])[0]
             else:
                 holding_val["nextDue"] = None
-    return rebuilt
+    filtered = [h for h in rebuilt if _match_on_location(holding=h, location=location)]
+    return filtered
 
 
 @router.get("/items/{barcode}")
@@ -170,6 +174,14 @@ async def read_item(
             xml = xml_raw
 
         return Response(content=xml, media_type="application/xml")
+
+
+def _match_on_location(holding: Dict, location: Optional[str]):
+    if location:
+        first_key = next(iter(holding))
+        return holding[first_key]["location"]["code"] == location
+    else:
+        return True
 
 
 def _okapi_login():
