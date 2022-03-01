@@ -13,6 +13,11 @@ import requests
 
 load_dotenv()
 
+# List of Instance HRIDs that have been cataloged according to newly proposed schema
+# -- Instance -> equipment type (i.e. macbooks)
+# -- Holdings -> location (i.e. olin)
+CUL_EQUIP_NEW = [15001287]
+
 
 class StripSpineOMaticAPIKey(APIRoute):
     def get_route_handler(self) -> Callable:
@@ -64,9 +69,20 @@ async def solr_item(hrid: int):
             due = item["status"].get("due")
             for holding in rebuilt:
                 for holding_val in holding.values():
-                    # if item["call"] == holding_val["call"]:
-                    # Re-join Holdings and Items via location code
-                    if item["location"]["code"] == holding_val["location"]["code"]:
+                    # TEMP: Support both new and old cataloging of equipment in FOLIO
+                    if hrid in CUL_EQUIP_NEW:
+                        # Re-join Holdings and Items via location code
+                        # -- aka the new cataloging proposal (Holdings per location)
+                        # -- equip statistical code applied to Instances
+                        match = (
+                            item["location"]["code"] == holding_val["location"]["code"]
+                        )
+                    else:
+                        # Re-join Holdings and Items vai call number
+                        # -- aka the original cataloging proposal (Holdings per type)
+                        # -- equip statistical code applied to Holdings
+                        match = item["call"] == holding_val["call"]
+                    if match:
                         holding_val["totalCount"] += 1
                         if status == "Available":
                             holding_val["availableCount"] += 1
