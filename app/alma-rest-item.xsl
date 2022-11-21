@@ -107,7 +107,9 @@
             <chronology_j></chronology_j>
             <chronology_k></chronology_k>
             <chronology_l></chronology_l>
-            <chronology_m></chronology_m>
+            <chronology_m>
+              <xsl:value-of select="item/fund"/>
+            </chronology_m>
             <description></description>
             <receiving_operator></receiving_operator>
             <process_type></process_type>
