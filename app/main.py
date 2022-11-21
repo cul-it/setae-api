@@ -68,10 +68,12 @@ async def read_item(
             pol = requests.get(os.getenv('OKAPI_URL') + "/orders/holding-summary/" + holdings, headers=headers).json()
             if len(pol["holdingSummaries"]) > 0:
                 pol = pol["holdingSummaries"][0]
-                funds = requests.get(os.getenv('OKAPI_URL') + "/orders/order-lines/" + pol["poLineId"], headers=headers).json()
-                for fund in funds:
-                    if "fundDistribution" in fund and fund["fundDistribution"][0]["code"] in plate_funds:
-                        item["fund"] = fund["fundDistribution"]["code"]
+                fund = requests.get(os.getenv('OKAPI_URL') + "/orders/order-lines/" + pol["poLineId"], headers=headers).json()
+                if "fundDistribution" in fund:
+                    for f in fund["fundDistribution"]:
+                        if "code" in f and f["code"] in plate_funds:
+                            print(f["code"])
+                            item["fund"] = f["code"]
             
             
 
