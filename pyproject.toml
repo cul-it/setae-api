@@ -12,6 +12,7 @@ requests = "^2.24.0"
 uvicorn = "^0.12.1"
 python-dotenv = "^0.14.0"
 lxml = "^4.6.2"
+httpcore = "0.15"
 
 [tool.poetry.dev-dependencies]
 mypy = "^0.812"
