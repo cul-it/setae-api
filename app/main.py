@@ -53,6 +53,7 @@ async def read_item(
         "X-Okapi-Token": _okapi_login(),
     }
     folio_inventory = requests.get(url, params=params, headers=headers)
+    plate_funds = ["p2053","p2052"]
 
     if format == "json":
         return folio_inventory.json()
@@ -62,6 +63,20 @@ async def read_item(
         # -- trim to single item because SpineOMatic expects object as root node
         try:
             item = data["items"][0]
+
+            holdings = item["holdingsRecordId"]
+            pol = requests.get(os.getenv('OKAPI_URL') + "/orders/holding-summary/" + holdings, headers=headers).json()
+            if len(pol["holdingSummaries"]) > 0:
+                pol = pol["holdingSummaries"][0]
+                fund = requests.get(os.getenv('OKAPI_URL') + "/orders/order-lines/" + pol["poLineId"], headers=headers).json()
+                if "fundDistribution" in fund:
+                    for f in fund["fundDistribution"]:
+                        if "code" in f and f["code"] in plate_funds:
+                            print(f["code"])
+                            item["fund"] = f["code"]
+            
+            
+
 
             # Trim spaces from call number components
             prefix, suffix = _trim_callno_components(item=item)
@@ -87,7 +102,7 @@ async def read_item(
                         string=suffix, regex=suffix_regex
                     )
                     item["effectiveCallNumberComponents"]["suffix"] = processed_suffix
-
+            
             xml_raw = json2xml.Json2xml(item, wrapper="item").to_xml()
 
         except IndexError:
