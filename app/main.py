@@ -53,7 +53,12 @@ async def read_item(
         "X-Okapi-Token": _okapi_login(),
     }
     folio_inventory = requests.get(url, params=params, headers=headers)
-    plate_funds = ["p2053","p2052"]
+    plate_funds = ["p2053","p2052","p8655","p7351", "p6790", "p6692",
+        "p4557","p3353","p3169","p3161","p3159",
+        "p3157","p2980","p2966","p2964","p2962","p2960","p2959","p2860","p2858",
+        "p2757","p2756","p2655","p2452","p2450","p2290","p2257","p2254","p2160"
+
+]
 
     if format == "json":
         return folio_inventory.json()
