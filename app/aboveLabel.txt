@@ -53,6 +53,7 @@ Law Rare Annex+Law Rare Annex=RARE
 Law Rare+Law Rare=RARE
 Law Reference+Law Reference=LAW;REF
 Law Reserve+Law Reserve=LAW
+Law Special Reserve+Law Special Reserve=LAW
 Law Technical Services+Law Technical Services=LAW
 Law+Law=LAW
 Legal Aid Clinic+Legal Aid Clinic=LAW;LEGAL
