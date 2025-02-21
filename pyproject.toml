@@ -3,9 +3,10 @@ name = "setae-api"
 version = "0.3.0"
 description = "API middleware for FOLIO"
 authors = ["Nick Cappadona <cappadona@users.noreply.github.com>"]
+package-mode = false
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9"
 fastapi = "^0.88.0"
 json2xml = "^3.5.0"
 requests = "^2.24.0"
@@ -14,7 +15,7 @@ python-dotenv = "^0.14.0"
 lxml = "^4.6.2"
 httpcore = "0.15.0"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 mypy = "^0.812"
 flake8 = "^3.9.2"
 black = "^21.5b1"
