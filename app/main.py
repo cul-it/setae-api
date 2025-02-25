@@ -140,7 +140,6 @@ def _okapi_login():
     r.raise_for_status()
     if r.status_code == 201:
         cookies = r.headers.get("Set-Cookie")
-        print(cookies)
         if cookies:
             for cookie in cookies.split(';'):
                 if cookie.startswith("folioAccessToken="):
