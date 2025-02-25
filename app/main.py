@@ -144,7 +144,7 @@ def _okapi_login():
             for cookie in cookies.split(';'):
                 if cookie.startswith("folioAccessToken="):
                     r.headers["X-Okapi-Token"] = cookie.split("=")[1].split(";")[0]
-            return r.headers["X-Okapi-Token"]
+                    return r.headers["X-Okapi-Token"]
     return None
 
 def _reps_to_regex(replacements: List, field: str):
