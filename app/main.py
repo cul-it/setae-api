@@ -128,7 +128,7 @@ async def read_item(
 
 
 def _okapi_login():
-    url = f"{os.getenv('OKAPI_URL')}/authn/login"
+    url = f"{os.getenv('OKAPI_URL')}/authn/login-with-expiry"
     headers = {
         "X-Okapi-Tenant": os.getenv("OKAPI_TENANT"),
     }
@@ -139,9 +139,13 @@ def _okapi_login():
     r = requests.post(url, json=data, headers=headers)
     r.raise_for_status()
     if r.status_code == 201:
-        return r.headers["X-Okapi-Token"]
+        cookies = r.headers.get("Set-Cookie")
+        if cookies:
+            for cookie in cookies.split(';'):
+                if cookie.startswith("folioAccessToken="):
+                    r.headers["X-Okapi-Token"] = cookie.split("=")[1].split(";")[0]
+                    return r.headers["X-Okapi-Token"]
     return None
-
 
 def _reps_to_regex(replacements: List, field: str):
     return [
