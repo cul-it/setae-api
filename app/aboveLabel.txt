@@ -58,6 +58,7 @@ Macaulay Library+Macaulay Library=ORNITH MAC
 Mann - Annex temp+Mann - Annex temp=MANN;ANX
 Mann - Annex+Mann - Annex=MANN;ANX
 Mann Coll. Development+Mann Coll. Development=MANN;COLL.DEVEL.
+Mann Ellis+Mann Ellis=MANN;Ellis
 Mann Hortorium Reference+Mann Hortorium Reference=HORT;REF
 Mann Hortorium+Mann Hortorium=HORT
 Mann New Books+Mann New Books=MANN
