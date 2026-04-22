@@ -1,4 +1,4 @@
-FROM tiangolo/uvicorn-gunicorn-fastapi:python3.9
+FROM tiangolo/uvicorn-gunicorn-fastapi:python3.10
 
 ENV PYTHONUNBUFFERED=1 \
   POETRY_HOME="/opt/poetry" \
