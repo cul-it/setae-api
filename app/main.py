@@ -1,5 +1,5 @@
 from dotenv import load_dotenv
-from fastapi import APIRouter, FastAPI, Request, Response
+from fastapi import APIRouter, FastAPI, HTTPException, Request, Response
 from fastapi.routing import APIRoute
 from json2xml import json2xml
 from json2xml.utils import readfromstring
@@ -40,11 +40,15 @@ async def read_root():
 
 @router.get("/items/{barcode}")
 async def read_item(
-    barcode: int,
+    barcode: str,
     format: Optional[str] = "xml",
     replace: Optional[bool] = True,
     transform: Optional[bool] = True,
 ):
+    barcode_rx = os.getenv('BARCODE_REGEX', r'\d+')
+    if re.fullmatch(barcode_rx, barcode) is None:
+        raise HTTPException(status_code=400, detail="invalid barcode")
+
     url = f"{os.getenv('OKAPI_URL')}/inventory/items"
     params = {"query": f"(barcode=={barcode})"}
     headers = {
